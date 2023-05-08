@@ -2,6 +2,8 @@ package com.event.admin.partner.service
 
 import com.event.admin.partner.service.dto.reqeust.PartnerAddRequest
 import com.event.admin.partner.service.dto.reqeust.PartnerModifyRequest
+import com.event.admin.partner.service.dto.response.PartnersResponse
+import com.event.domain.partner.Partner
 import com.event.domain.partner.PartnerRepository
 import com.event.util.findByIdOrThrow
 import org.springframework.stereotype.Service
@@ -24,5 +26,7 @@ class PartnerServiceImpl (
         request.phoneNumber?.apply {partner.changePhoneNumber(request.phoneNumber)}
     }
 
-
+    override fun getPartners(): List<PartnersResponse> {
+        return partnerRepository.findAll().map{it ->  PartnersResponse.from(it)}
+    }
 }

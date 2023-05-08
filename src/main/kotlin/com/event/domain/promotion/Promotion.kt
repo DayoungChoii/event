@@ -2,12 +2,7 @@ package com.event.domain.promotion
 
 import com.event.domain.partner.Partner
 import java.time.Instant
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-import javax.persistence.JoinColumn
-import javax.persistence.OneToMany
-import javax.persistence.OneToOne
+import javax.persistence.*
 
 @Entity
 class Promotion(
@@ -17,6 +12,7 @@ class Promotion(
     val informedAgreements: List<InformedAgreement>,
     val startDate: Instant,
     val endDate: Instant,
+    @Column(name = "state")
     val state: PromotionStateType = PromotionStateType.OPEN,
     @OneToOne
     @JoinColumn(name = "partnerId")

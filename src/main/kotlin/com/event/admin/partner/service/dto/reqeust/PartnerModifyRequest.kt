@@ -8,4 +8,5 @@ data class PartnerModifyRequest(
     val name: String,
     val id: Long,
 ) {
+
 }
