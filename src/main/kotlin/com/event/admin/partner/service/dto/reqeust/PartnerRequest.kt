@@ -16,3 +16,17 @@ data class PartnerAddRequest (
         )
     }
 }
+
+data class PartnerSearchDto (
+    val phoneNumber: String?,
+    val name: String?,
+) {}
+
+data class PartnerModifyRequest (
+    val phoneNumber: String? = null,
+    val address: String? = null,
+    val name: String,
+    val id: Long,
+) {
+
+}

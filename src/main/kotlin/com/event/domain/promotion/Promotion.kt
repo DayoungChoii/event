@@ -1,6 +1,7 @@
 package com.event.domain.promotion
 
 import com.event.domain.partner.Partner
+import com.event.domain.promotion.constant.PromotionStateType
 import java.time.Instant
 import javax.persistence.*
 

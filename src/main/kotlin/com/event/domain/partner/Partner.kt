@@ -19,7 +19,7 @@ class Partner constructor(
         fun fixture(
             phoneNumber: String = "01011111111",
             address: String = "서울시 뫄뫄구 뫄뫄동",
-            name: String = "맥스영",
+            name: String = "파트너사A",
             id: Long? = null
         ): Partner = Partner(phoneNumber, address, name, id)
     }

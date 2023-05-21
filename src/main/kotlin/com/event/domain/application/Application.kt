@@ -1,5 +1,6 @@
 package com.event.domain.application
 
+import com.event.domain.application.constant.ApplicationStateType
 import com.event.domain.promotion.Promotion
 import javax.persistence.Column
 import javax.persistence.Entity

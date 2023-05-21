@@ -3,7 +3,8 @@ package com.event.admin.partner.controller
 import com.event.admin.partner.service.PartnerService
 import com.event.admin.partner.service.dto.reqeust.PartnerAddRequest
 import com.event.admin.partner.service.dto.reqeust.PartnerModifyRequest
-import com.event.admin.partner.service.dto.reqeust.PartnersRequest
+import com.event.admin.partner.service.dto.reqeust.PartnerSearchDto
+import org.springframework.data.domain.PageRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -32,11 +33,12 @@ class PartnerController (
     }
 
     @GetMapping("/partner")
-    fun getPartners(@RequestBody request: PartnersRequest): ResponseEntity<Any> {
-        //TODO paging
+    fun getPartners(partnerSearchDto: PartnerSearchDto,
+                    pageRequest: PageRequest,
+    ): ResponseEntity<Any> {
         return ResponseEntity
             .ok()
-            .body(partnerService.getPartners())
+            .body(partnerService.getPartners(partnerSearchDto, pageRequest))
     }
 
 
