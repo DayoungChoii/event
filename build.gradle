@@ -29,6 +29,7 @@ dependencies {
 	implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
 	implementation 'org.jetbrains.kotlin:kotlin-reflect'
 	implementation "com.querydsl:querydsl-jpa:5.0.0"
+	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.6'
 	kapt("com.querydsl:querydsl-apt:5.0.0:jpa")
 	kapt("org.springframework.boot:spring-boot-configuration-processor")
 	compileOnly 'org.projectlombok:lombok'

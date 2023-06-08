@@ -9,7 +9,6 @@ import javax.persistence.*
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener::class)
-
 abstract class BaseEntity {
     @CreatedDate
     @Column(nullable = false, updatable = false)
