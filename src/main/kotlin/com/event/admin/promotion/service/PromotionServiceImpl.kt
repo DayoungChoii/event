@@ -3,11 +3,13 @@ package com.event.admin.promotion.service
 import com.event.admin.promotion.service.dto.request.PromotionAddRequest
 import com.event.admin.promotion.service.dto.request.PromotionModifyRequest
 import com.event.admin.promotion.service.dto.request.PromotionSearchDto
+import com.event.admin.promotion.service.dto.response.PromotionResponse
 import com.event.domain.promotion.repository.InformedRepository
+import com.event.domain.promotion.repository.PromotionQuerydslRepository
 import com.event.domain.promotion.repository.PromotionRepository
 import com.event.exception.promotion.PromotionException
 import com.event.util.findByIdOrThrow
-import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional
 class PromotionServiceImpl (
     private val promotionRepository: PromotionRepository,
     private val informedRepository: InformedRepository,
+    private val promotionQuerydslRepository: PromotionQuerydslRepository,
 ) : PromotionService{
     override fun savePromotion(request: PromotionAddRequest) {
         try {
@@ -43,7 +46,15 @@ class PromotionServiceImpl (
     }
 
     @Transactional(readOnly = true)
-    override fun getPromotions(promotionSearchDto: PromotionSearchDto, pageRequest: PageRequest) {
-        TODO("Not yet implemented")
+    override fun getPromotions(
+        promotionSearchDto: PromotionSearchDto,
+        pageable: Pageable)
+    : List<PromotionResponse> {
+        try {
+            return promotionQuerydslRepository.findAll(promotionSearchDto, pageable)
+                ?.map(PromotionResponse.Companion::from) ?: emptyList<PromotionResponse>()
+        } catch (e: Exception) {
+            throw PromotionException("GetPromotionsFailureException", e)
+        }
     }
 }

@@ -15,8 +15,7 @@ class PartnerQuerydslRepository (
     fun findAll(searchDto: PartnerSearchDto ,
                 pageable: Pageable,)
     : MutableList<Partner>? {
-        return queryFactory.select(partner)
-            .from(partner)
+        return queryFactory.selectFrom(partner)
             .where(searchDto.name?.let { partner.name.like(searchDto.name)},
                 searchDto.phoneNumber?.let { partner.phoneNumber.like(searchDto.phoneNumber)})
             .withPageable(pageable)

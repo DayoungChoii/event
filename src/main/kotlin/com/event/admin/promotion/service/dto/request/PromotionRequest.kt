@@ -49,6 +49,7 @@ data class PromotionModifyRequest (
 }
 
 data class PromotionSearchDto(
-    val name: String,
+    val name: String?,
 ) {}
+
 

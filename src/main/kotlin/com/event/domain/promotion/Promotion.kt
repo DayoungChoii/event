@@ -25,13 +25,15 @@ class Promotion constructor(
 ) : BaseEntity() {
 
     companion object {
-        fun fixture() = Promotion(
-            name = "A 이벤트",
-            content = "A 이벤트 콘텐츠",
-            startDate = Instant.now().plus(1, ChronoUnit.DAYS),
-            endDate = Instant.now().plus(3, ChronoUnit.DAYS),
-            state = PromotionStateType.OPEN
-        )
+        fun fixture(
+            name: String =  "A 이벤트",
+            content: String =  "A 이벤트 콘텐츠",
+            informedAgreements: List<InformedAgreement>? = null,
+            startDate: Instant = Instant.now().plus(1, ChronoUnit.DAYS),
+            endDate: Instant = Instant.now().plus(3, ChronoUnit.DAYS),
+            state: PromotionStateType = PromotionStateType.OPEN,
+            partner: Partner = Partner.fixture()
+        ): Promotion = Promotion(name, content, null, startDate, endDate, state, partner)
     }
 
     fun changeName(name: String) {

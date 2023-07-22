@@ -3,6 +3,9 @@ package com.event.admin.promotion.service
 import com.event.admin.promotion.service.dto.request.InformedAgreementRequest
 import com.event.admin.promotion.service.dto.request.PromotionAddRequest
 import com.event.admin.promotion.service.dto.request.PromotionModifyRequest
+import com.event.admin.promotion.service.dto.request.PromotionSearchDto
+import com.event.domain.partner.Partner
+import com.event.domain.partner.repository.PartnerRepository
 import com.event.domain.promotion.InformedAgreement
 import com.event.domain.promotion.Promotion
 import com.event.domain.promotion.constant.PromotionStateType
@@ -14,23 +17,25 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.annotation.Rollback
-import org.springframework.transaction.annotation.Transactional
+import org.springframework.data.domain.PageRequest
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 
 @SpringBootTest
-class PromotionServiceImplTest @Autowired constructor(
+class PromotionServiceTest @Autowired constructor(
     private val promotionService: PromotionService,
     private val promotionRepository: PromotionRepository,
     private val informedRepository: InformedRepository,
+    private val partnerRepository: PartnerRepository,
  ) {
 
     private val promotionFixture: Promotion = Promotion.fixture()
     private val informedAgreementFixture: List<InformedAgreement> = InformedAgreement.fixture()
+
     @AfterEach
     fun clear() {
-//        promotionRepository.deleteAll()
+        informedRepository.deleteAll()
+        promotionRepository.deleteAll()
     }
     @Test
     fun promotionSaveTest(){
@@ -100,6 +105,40 @@ class PromotionServiceImplTest @Autowired constructor(
         // then
         val foundPromotion = promotionRepository.findByIdOrThrow(promotion.id)
         assertThat(foundPromotion.state).isEqualTo(PromotionStateType.CLOSE)
+    }
+
+    @Test
+    fun getPromotionsTest() {
+        // given
+        val partner = partnerRepository.save(Partner.fixture())
+        val promotion1 = promotionRepository.save(Promotion.fixture(name = "promotion1", partner = partner))
+        val promotion2 = promotionRepository.save(Promotion.fixture(name = "promotion2", partner = partner))
+        val promotion3 = promotionRepository.save(Promotion.fixture(name = "promotion3", partner = partner))
+        val promotion4 = promotionRepository.save(Promotion.fixture(name = "promotion4", partner = partner))
+
+        // when
+        val promotions = promotionService.getPromotions(PromotionSearchDto(null,), PageRequest.of(0, 3))
+
+        // then
+        assertThat(promotions).hasSize(3)
+        assertThat(promotions).extracting("name").containsExactly("promotion4", "promotion3", "promotion2")
+    }
+
+    @Test
+    fun getSearchedPromotionsTest() {
+        // given
+        val partner = partnerRepository.save(Partner.fixture())
+        val promotion1 = promotionRepository.save(Promotion.fixture(name = "promotion1", partner = partner))
+        val promotion2 = promotionRepository.save(Promotion.fixture(name = "promotion2", partner = partner))
+        val promotion3 = promotionRepository.save(Promotion.fixture(name = "promotion3", partner = partner))
+        val promotion4 = promotionRepository.save(Promotion.fixture(name = "promotion4", partner = partner))
+
+        // when
+        val promotions = promotionService.getPromotions(PromotionSearchDto("promotion1"), PageRequest.of(0, 3))
+
+        // then
+        assertThat(promotions).hasSize(1)
+        assertThat(promotions).extracting("name").containsExactly("promotion1")
     }
 }
 

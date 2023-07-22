@@ -11,10 +11,9 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Sort
 
 @SpringBootTest
-class PartnerServiceImplTest @Autowired constructor(
+class PartnerServiceTest @Autowired constructor(
     private val partnerService: PartnerService,
     private val partnerRepository: PartnerRepository,
 ) {
@@ -73,7 +72,7 @@ class PartnerServiceImplTest @Autowired constructor(
         val partners = partnerService.getPartners(PartnerSearchDto(null, null), PageRequest.of(0, 3))
 
         // then
-        assertThat(partners).hasSize(3);
+        assertThat(partners).hasSize(3)
         assertThat(partners).extracting("name").containsExactly("파트너사A", "파트너사B", "파트너사C")
     }
 
